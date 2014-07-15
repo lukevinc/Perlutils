@@ -387,12 +387,9 @@ DEL
       }
       
       io->file($dir)->utf8->print("");
-      
-      my @sortedkeys = keys %keyvalue;
-      @sortedkeys = sort{ fc($a) cmp fc($b) } @sortedkeys;
-    
-      foreach ( @sortedkeys ){
-         say;
+            
+      foreach ( sort { fc($a) cmp fc($b) } keys %keyvalue){
+         
          uc($_).":$keyvalue{ $_ }\n" >> io->file( $dir );
        
       }
