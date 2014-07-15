@@ -1,4 +1,15 @@
-Ask and find! Version 3.0 beta.
+Ask and find! Version 4.0
+
+Required modules:
+	
+	IO::All
+	Cwd
+	File::Basename
+
+	just use cpan or cpanm IO:All Cwd File::Basename to install them
+
+About note:	
+
 	2014 by Luke V. Franklin.
 
 	key:value - store the key 'key' with value 'value'
@@ -11,4 +22,8 @@ Ask and find! Version 3.0 beta.
 	pwd - print current work directory
 	lines - show the lines of the file
 	keywords - show all the keywords of the file
+	sort - sort keyword file alfabetically
 	quit/exit - exit the program
+
+	Hints, doubts and bugs: send e-mail to <lukevinc9@gmail.com>
+
