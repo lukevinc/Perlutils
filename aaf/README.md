@@ -10,6 +10,7 @@ Required modules:
 
 About note:	
 
+	Ask and find! Version 4.0
 	2014 by Luke V. Franklin.
 
 	key:value - store the key 'key' with value 'value'
