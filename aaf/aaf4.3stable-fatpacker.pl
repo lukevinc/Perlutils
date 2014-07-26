@@ -2391,7 +2391,7 @@ CREATE
              
   unless ( $entry eq 'y' ){
             
-    say "Aborting program...";  
+    say "\n\tAborting program...\n";  
     exit();
   }
   
@@ -2399,13 +2399,13 @@ CREATE
   $default = "$ENV{PWD}/keywords.txt" ; 
   
   $dirdirfile = "$ENV{ PWD }/dirfile.txt";
-  say "Default directory file created successfully!";
+  say "\n\tDefault directory file created successfully!\n";
   
 }  
 
 unless ( $default || (-e $default) || length($default) ){
  
-  say "Invalid directory, check your dirfile.txt and check it for errors.";
+  say "\n\tInvalid directory, check your dirfile.txt and check it for errors.\n";
   
   exit();
 }
@@ -2433,15 +2433,15 @@ CREATE
         
          chomp( my $entry2 = <STDIN>);
              
-         unless ( $entry2 eq 's' ){
+         unless ( $entry2 eq 'y' ){
             
-            say "Aborting...";  
+            say "\n\tAborting...\n";  
             last MAIN;
          }
 
          io->file($dir)->utf8->print("");
           
-         say "File created successfully: $dirname";  
+         say "\n\tFile created successfully: $dirname\n";  
          next MAIN;
    }
    
@@ -2452,7 +2452,7 @@ CREATE
    
    if($entry eq ''){
     
-         say "Error: blank key. Try another.";
+         say "\n\tError: blank key. Try another.\n";
          
          next MAIN;
   
@@ -2461,7 +2461,7 @@ CREATE
    my $count = @{[$entry =~ /:/g]};#count number of colons
     
    if ( $count > 1 ){
-      say "Error: more than one colon found! Try again!";
+      say "\n\tError: more than one colon found! Try again!\n";
       
       next MAIN;
    }
@@ -2512,8 +2512,7 @@ CREATE
             $hist{'Verbs'}++;
             last;
           }  
-          
-          
+                    
           if ($initial eq $_){
            
              $hist{$_}++;
@@ -2523,28 +2522,38 @@ CREATE
         }  
         
       }  
-      my $t = 0;
-      print "\n";
+      my $sum = 0;
+      my $count2 = 0;
+      
+      print "\n\t";
       foreach (sort keys %hist ){
        
-        my $pc = ( $hist{$_} / $total ) * 100;
+        my $pc = ( $hist{$_} / $total ) * 30;
         
         $pc = ceil( $pc );
         
-        $t += $pc;
-        say "\t$_: ", "*" x $pc, " ($pc)"; 
+        $sum += $pc;
+        print "$_: ", "*" x $pc, " ($pc) : "; 
         
+        $count2++;
+        
+        if ($count2 > 3){
+         print "\n\t";
+         $count2 = 0;
+        }
+               
       }
       
-      say "\n\tTotal: $t\n";
+      say "\n\n\tTotal: $sum\n";
+      say "\tHint: sort the file to obtain better accuracy.\n";
       
-     next MAIN;
+      next MAIN;
    }   
 
    #edit menu
 #------------------------------------------------------------------------------     
    if ($entry eq 'e') {
-      print "Which key do you want to edit? ";
+      print "\n\tWhich key do you want to edit? ";
       
       chomp( my $entry = <STDIN>) ;
           
@@ -2555,14 +2564,14 @@ CREATE
          my ($word, $text) = split ':', $line;
          
          if ($entry eq $word) {#if key is in keywords
-            print "Text for '$word': ";
+            print "\n\tText for '$word': ";
             
             chomp( my $entry = <STDIN>);
                   
             $count = @{[$entry =~ /:/g]};#count number of colons
             
             if ($count) {
-               say "Error: colon found in text.";          
+               say "\n\tError: colon found in text.\n";          
                
                next MAIN;
             }
@@ -2572,7 +2581,7 @@ CREATE
             
             unless ($yesno eq 'y'){
             
-               say "Key edit canceled!";
+               say "\n\tKey edit canceled!\n";
                next MAIN;
             }
                
@@ -2585,7 +2594,7 @@ CREATE
               
       unless ($count){
       
-         say "Error: key for edition not found!";
+         say "\n\tError: key for edition not found!\n";
          next 
       }
       io->file($dir)->utf8->print("");  
@@ -2594,12 +2603,12 @@ CREATE
          
          "$_:$keyvalue{ $_ }\n" >> io->file($dir);
       }
-      say "Key updated successfully in $dirname!'";                
+      say "\n\tKey updated successfully in $dirname!'\n";                
       
       next MAIN;   
    }
 
- #load menu
+ #change dir menu
 #------------------------------------------------------------------------------   
    if ($entry eq 'cd') {
      
@@ -2607,11 +2616,11 @@ CREATE
       
       chomp( my $entry2 = <STDIN>); 
       
-      print "Are you sure do you want change the default dir? (y/N): "; 
+      print "\n\tAre you sure do you want change the default dir? (y/N): "; 
       chomp( my $yesno = <STDIN>); 
       
       unless ( $yesno eq 'y' ){
-        say "Directory change canceled.";    
+        say "\n\tDirectory change canceled.\n";    
         
         next MAIN;
        
@@ -2620,7 +2629,7 @@ CREATE
       $entry2 =~ s/~/$ENV{ HOME }/g;
       
       unless (-e $entry2){
-       say "Error: invalid directory!";       
+       say "\n\tError: invalid directory!\n";       
        
        next MAIN;  
       }
@@ -2629,7 +2638,7 @@ CREATE
       io->file($dirdirfile)->utf8->print($entry2); 
             
       
-      say "\tDefault file changed successfully in $dirdirfile";
+      say "\n\tDefault file changed successfully in $dirdirfile\n";
       next MAIN;   
    } 
 
@@ -2637,7 +2646,7 @@ CREATE
 #------------------------------------------------------------------------------   
    if ($entry eq 'l') {
       
-      print "Type the dir/file do you want to load your keys: ";
+      print "\n\tType the dir/file do you want to load your keys: ";
       chomp( my $entry = <STDIN>);
      
       my $safe = $dir;
@@ -2650,7 +2659,7 @@ CREATE
       $dirname =~ s/$ENV{ HOME }/~/;
       
       if ( -d $dir ){
-            say "Error: $dirname is a directory!";
+            say "\n\tError: $dirname is a directory!\n";
             
             $dir = $safe;
             next MAIN;
@@ -2668,14 +2677,14 @@ CREATE
           
          unless ( $entry2 eq 'y' ){
             
-            say "Program load canceled.";
+            say "\n\tProgram load canceled.\n";
               
             $dir = $safe;
             next MAIN;
          }
                     
          io->file($dir)->utf8->print(""); 
-         say "File created successfully: $dirname"; 
+         say "\n\tFile created successfully: $dirname\n"; 
          
          next MAIN;
       }
@@ -2689,7 +2698,7 @@ CREATE
 #------------------------------------------------------------------------------   
    if ($entry eq 'd') {
       
-      print "Which key do you want to delete? ";
+      print "\n\tWhich key do you want to delete? ";
       chomp( my $entry = <STDIN>);
         
       my %keyvalue;
@@ -2700,17 +2709,17 @@ CREATE
          
          if ($entry =~ /\b$word\b/i) {#if key is in keywords
          
-            print "Are you sure do you want to delete '$entry'? (y/N): ";
+            print "\tAre you sure do you want to delete '$entry'? (y/N): ";
             
             chomp( my $entry = <STDIN>);
             
             if ($entry eq 'y'){
-              say "Key '$word' deleted successfully!";
+              say "\n\tKey '$word' deleted successfully!\n";
             }
             
             else{
                
-               say "Error: key '$word' not deleted!";
+               say "\n\tError: key '$word' not deleted!\n";
                next MAIN;
             }
                         
@@ -2725,7 +2734,7 @@ CREATE
       unless ($count){
       
          
-         say "Error: key doesn't exists!";
+         say "\n\tError: key doesn't exists!\n";
          next MAIN;
       }
            
@@ -2743,18 +2752,18 @@ CREATE
 #------------------------------------------------------------------------------   
    if ($entry eq 'df') {
      my $basename = basename($dir);
-     print "Are you sure do you want to edit '$basename'? (y/N): ";
+     print "\tAre you sure do you want to edit '$basename'? (y/N): ";
      
      chomp( my $entry = <STDIN> );
      
       unless ( $entry eq 'y' ){
-            say "File delete canceled.";
+            say "\n\tFile delete canceled.\n";
             next MAIN;
          }
          
      unlink $dir;
      
-     say "File '$basename' deleted successfully!";
+     say "\n\tFile '$basename' deleted successfully!\n";
      $dir = $default;    
           
      next MAIN;  
@@ -2772,7 +2781,7 @@ CREATE
    #pwd menu
 #------------------------------------------------------------------------------   
    if ($entry eq 'p') {
-      say "\tYou are here: $ENV{PWD}";
+      say "\n\tYou are here: $ENV{PWD}\n";
       
       next MAIN;
    }
@@ -2840,7 +2849,7 @@ CREATE
           }
       
        }
-       say "\n\t$count chave(s) encontradas.\n";
+       
        say "\n\t$count key(s) found.\n";
       next MAIN;
     }
@@ -2866,7 +2875,7 @@ CREATE
          uc($_).":$keyvalue{ $_ }\n" >> io->file( $dir );
        
       }
-      say "Keys sorted in '$dirname' successfully!";                
+      say "\n\tKeys sorted in '$dirname' successfully!\n";                
       
       next MAIN;
        
@@ -2879,7 +2888,7 @@ CREATE
       
       if (length($key) < 2 || length($value) < 2){
 
-         say "Error: invalid key or value!";
+         say "\n\tError: invalid key or value!\n";
          next MAIN;
       
       }
@@ -2887,7 +2896,7 @@ CREATE
       while (my $line = $file->chomp->getline()) {
       
          if ($line =~ m/^$key:/i){
-            say "The key '$key' already exists in $dirname! Try another.";
+            say "\n\tThe key '$key' already exists in $dirname! Try another.\n";
              
             next MAIN; 
          }
@@ -2897,7 +2906,7 @@ CREATE
       "$entry\n" >> io->file( $dir );
       
        
-      say "The key '$key' was stored with the value '$value' in $dirname!";
+      say "\n\tThe key '$key' was stored with the value '$value' in $dirname!\n";
   }
   
   else{
@@ -2912,7 +2921,7 @@ CREATE
          }
       }
    
-   say "Error: key '$key' not found in $dirname!";
+   say "\n\tError: key '$key' not found in $dirname!\n";
   }      
 } 
 #exit message
