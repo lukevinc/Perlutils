@@ -5236,7 +5236,7 @@ MAIN:while ( 1 ) {
       print "\n\t";
       foreach (sort keys %hist ){
        
-        my $pc = ( $hist{$_} / $total ) * 30;
+        my $pc = ( $hist{$_} / $total ) * 100;
         
         $pc = ceil( $pc );
         
@@ -5245,7 +5245,7 @@ MAIN:while ( 1 ) {
         
         $count2++;
         
-        if ($count2 > 3){
+        if ($count2 > 1){
          print "\n\t";
          $count2 = 0;
         }
